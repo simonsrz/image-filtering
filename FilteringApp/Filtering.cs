@@ -1,4 +1,6 @@
 using System.Diagnostics.Contracts;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace FilteringApp
 {
@@ -33,6 +35,11 @@ namespace FilteringApp
         {
             modifiedImage.Image = initialImg;
             modifiedImg = initialImg;
+        }
+
+        private void saveImageMenuItem_Click(object sender, EventArgs e)
+        {
+            modifiedImage.Image.Save(@"D:\test.png", ImageFormat.Png);
         }
 
         private void inversionButton_Click(object sender, EventArgs e)
@@ -121,5 +128,44 @@ namespace FilteringApp
             modifiedImage.Image = afterModificationMap;
             modifiedImg = afterModificationMap;
         }
+
+        private void gammaButton_Click(object sender, EventArgs e)
+        {
+            Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
+            double gamma = 1.5;
+
+            for (int x = 0; x < modifiedImg.Width; x++)
+            {
+                for (int y = 0; y < modifiedImg.Height; y++)
+                {
+                    Color currPixel = modifiedImg.GetPixel(x, y);
+
+                    int red = (int)(255.0 * Math.Pow((currPixel.R / 255.0), gamma));
+                    int green = (int)(255.0 * Math.Pow((currPixel.G / 255.0), gamma));
+                    int blue = (int)(255.0 * Math.Pow((currPixel.B / 255.0), gamma));
+
+                    if (red > 255)
+                        red = 255;
+                    if (green > 255)
+                        green = 255;
+                    if (blue > 255)
+                        blue = 255;
+                    if (red < 0)
+                        red = 0;
+                    if (green < 0)
+                        green = 0;
+                    if (blue < 0)
+                        blue = 0;
+
+                    currPixel = Color.FromArgb(red, green, blue);
+
+                    afterModificationMap.SetPixel(x, y, currPixel);
+                }
+            }
+            modifiedImage.Image = afterModificationMap;
+            modifiedImg = afterModificationMap;
+        }
+
+        
     }
 }
