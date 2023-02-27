@@ -38,20 +38,20 @@
             this.brightnessButton = new System.Windows.Forms.Button();
             this.inversionButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.embossButton = new System.Windows.Forms.Button();
+            this.edgeDetectionButton = new System.Windows.Forms.Button();
+            this.gaussianBlurButton = new System.Windows.Forms.Button();
+            this.sharpenButton = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.blurButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.loadImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.blueButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.sharpenButton = new System.Windows.Forms.Button();
-            this.gaussianBlurButton = new System.Windows.Forms.Button();
-            this.edgeDetectionButton = new System.Windows.Forms.Button();
-            this.embossButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.initialImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
@@ -158,13 +158,99 @@
             this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.blueButton);
+            this.groupBox2.Controls.Add(this.blurButton);
             this.groupBox2.Location = new System.Drawing.Point(1246, 367);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(316, 292);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Convolution filters";
+            // 
+            // embossButton
+            // 
+            this.embossButton.Location = new System.Drawing.Point(6, 246);
+            this.embossButton.Name = "embossButton";
+            this.embossButton.Size = new System.Drawing.Size(304, 40);
+            this.embossButton.TabIndex = 11;
+            this.embossButton.Text = "Emboss";
+            this.embossButton.UseVisualStyleBackColor = true;
+            this.embossButton.Click += new System.EventHandler(this.embossButton_Click);
+            // 
+            // edgeDetectionButton
+            // 
+            this.edgeDetectionButton.Location = new System.Drawing.Point(6, 194);
+            this.edgeDetectionButton.Name = "edgeDetectionButton";
+            this.edgeDetectionButton.Size = new System.Drawing.Size(304, 40);
+            this.edgeDetectionButton.TabIndex = 10;
+            this.edgeDetectionButton.Text = "Edge detection";
+            this.edgeDetectionButton.UseVisualStyleBackColor = true;
+            this.edgeDetectionButton.Click += new System.EventHandler(this.edgeDetectionButton_Click);
+            // 
+            // gaussianBlurButton
+            // 
+            this.gaussianBlurButton.Location = new System.Drawing.Point(6, 90);
+            this.gaussianBlurButton.Name = "gaussianBlurButton";
+            this.gaussianBlurButton.Size = new System.Drawing.Size(304, 40);
+            this.gaussianBlurButton.TabIndex = 9;
+            this.gaussianBlurButton.Text = "Gaussian blur";
+            this.gaussianBlurButton.UseVisualStyleBackColor = true;
+            this.gaussianBlurButton.Click += new System.EventHandler(this.gaussianBlurButton_Click);
+            // 
+            // sharpenButton
+            // 
+            this.sharpenButton.Location = new System.Drawing.Point(6, 142);
+            this.sharpenButton.Name = "sharpenButton";
+            this.sharpenButton.Size = new System.Drawing.Size(304, 40);
+            this.sharpenButton.TabIndex = 9;
+            this.sharpenButton.Text = "Sharpen";
+            this.sharpenButton.UseVisualStyleBackColor = true;
+            this.sharpenButton.Click += new System.EventHandler(this.sharpenButton_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 246);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(0, 0);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(6, 194);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(0, 0);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 142);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(0, 0);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 90);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(0, 0);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // blurButton
+            // 
+            this.blurButton.Location = new System.Drawing.Point(6, 38);
+            this.blurButton.Name = "blurButton";
+            this.blurButton.Size = new System.Drawing.Size(304, 40);
+            this.blurButton.TabIndex = 4;
+            this.blurButton.Text = "Blur";
+            this.blurButton.UseVisualStyleBackColor = true;
+            this.blurButton.Click += new System.EventHandler(this.blurButton_Click);
             // 
             // menuStrip1
             // 
@@ -210,87 +296,6 @@
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Images";
-            // 
-            // blueButton
-            // 
-            this.blueButton.Location = new System.Drawing.Point(6, 38);
-            this.blueButton.Name = "blueButton";
-            this.blueButton.Size = new System.Drawing.Size(304, 40);
-            this.blueButton.TabIndex = 4;
-            this.blueButton.Text = "Blur";
-            this.blueButton.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 90);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(0, 0);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 142);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(0, 0);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(6, 194);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(0, 0);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(6, 246);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(0, 0);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // sharpenButton
-            // 
-            this.sharpenButton.Location = new System.Drawing.Point(6, 142);
-            this.sharpenButton.Name = "sharpenButton";
-            this.sharpenButton.Size = new System.Drawing.Size(304, 40);
-            this.sharpenButton.TabIndex = 9;
-            this.sharpenButton.Text = "Sharpen";
-            this.sharpenButton.UseVisualStyleBackColor = true;
-            // 
-            // gaussianBlurButton
-            // 
-            this.gaussianBlurButton.Location = new System.Drawing.Point(6, 90);
-            this.gaussianBlurButton.Name = "gaussianBlurButton";
-            this.gaussianBlurButton.Size = new System.Drawing.Size(304, 40);
-            this.gaussianBlurButton.TabIndex = 9;
-            this.gaussianBlurButton.Text = "Gaussian blur";
-            this.gaussianBlurButton.UseVisualStyleBackColor = true;
-            // 
-            // edgeDetectionButton
-            // 
-            this.edgeDetectionButton.Location = new System.Drawing.Point(6, 194);
-            this.edgeDetectionButton.Name = "edgeDetectionButton";
-            this.edgeDetectionButton.Size = new System.Drawing.Size(304, 40);
-            this.edgeDetectionButton.TabIndex = 10;
-            this.edgeDetectionButton.Text = "Edge detection";
-            this.edgeDetectionButton.UseVisualStyleBackColor = true;
-            // 
-            // embossButton
-            // 
-            this.embossButton.Location = new System.Drawing.Point(6, 246);
-            this.embossButton.Name = "embossButton";
-            this.embossButton.Size = new System.Drawing.Size(304, 40);
-            this.embossButton.TabIndex = 11;
-            this.embossButton.Text = "Emboss";
-            this.embossButton.UseVisualStyleBackColor = true;
             // 
             // Filtering
             // 
@@ -344,6 +349,6 @@
         private Button button4;
         private Button button3;
         private Button button2;
-        private Button blueButton;
+        private Button blurButton;
     }
 }
