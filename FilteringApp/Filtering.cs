@@ -42,6 +42,81 @@ namespace FilteringApp
             modifiedImage.Image.Save(@"D:\test.png", ImageFormat.Png);
         }
 
+        private Color[,] getColorsMatrix(int x, int y)
+        {
+            Color[,] colorsMatrix = new Color[3, 3];
+
+            for (int posX = 0; posX < 3; posX++)
+            {
+                for(int posY = 0; posY < 3; posY++)
+                {
+                    if (x - 1 + posX < 0 || y - 1 + posY < 0 || x - 1 + posX >= modifiedImg.Width || y - 1 + posY >= modifiedImg.Height)
+                    {
+                        colorsMatrix[posX, posY] = Color.Empty;
+                    }
+                    else
+                    {
+                        colorsMatrix[posX, posY] = modifiedImg.GetPixel(x - 1 + posX, y - 1 + posY);
+                    }
+                }
+            }
+            return colorsMatrix;
+        }
+
+        private double getRedChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        {
+            double red = 0;
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    red += colorsMatrix[i, j].R * kernel[i, j];
+                }
+            }
+            return red;
+        }
+        private double getGreenChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        {
+            double green = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    green += colorsMatrix[i, j].G * kernel[i, j];
+                }
+            }
+            return green;
+        }
+        private double getBlueChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        {
+            double blue = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    blue += colorsMatrix[i, j].B * kernel[i, j];
+                }
+            }
+            return blue;
+        }
+
+        private int[] rgbValidation(int red, int green, int blue)
+        {
+            if (red > 255)
+                red = 255;
+            if (green > 255)
+                green = 255;
+            if (blue > 255)
+                blue = 255;
+            if (red < 0)
+                red = 0;
+            if (green < 0)
+                green = 0;
+            if (blue < 0)
+                blue = 0;
+            return new int[3] { red, green, blue };
+        }
+
         private void inversionButton_Click(object sender, EventArgs e)
         {
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
@@ -75,14 +150,9 @@ namespace FilteringApp
                     int green = currPixel.G + 10;
                     int blue = currPixel.B + 10;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
+                    int[] rgb = rgbValidation(red,green, blue);
 
-                    currPixel = Color.FromArgb(red, green, blue);
+                    currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, currPixel);
                 }
@@ -107,20 +177,9 @@ namespace FilteringApp
                     int green = (int)(((((currPixel.G / 255.0) - 0.5) * contrastLevel) + 0.5) * 255.0);
                     int blue = (int)(((((currPixel.B / 255.0) - 0.5) * contrastLevel) + 0.5) * 255.0);
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation(red, green, blue);
 
-                    currPixel = Color.FromArgb(red, green, blue);
+                    currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, currPixel);
                 }
@@ -144,20 +203,9 @@ namespace FilteringApp
                     int green = (int)(255.0 * Math.Pow((currPixel.G / 255.0), gamma));
                     int blue = (int)(255.0 * Math.Pow((currPixel.B / 255.0), gamma));
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation(red,green, blue);
 
-                    currPixel = Color.FromArgb(red, green, blue);
+                    currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, currPixel);
                 }
@@ -173,60 +221,19 @@ namespace FilteringApp
 
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
 
-            for (int x = 1; x < modifiedImg.Width - 1; x++)
+            for (int x = 0; x < modifiedImg.Width; x++)
             {
-                for (int y = 1; y < modifiedImg.Height - 1; y++)
+                for (int y = 0; y < modifiedImg.Height; y++)
                 {
-                    Color[,] colorsMatrix = new Color[3,3] { 
-                        { modifiedImg.GetPixel(x - 1, y - 1), modifiedImg.GetPixel(x, y - 1), modifiedImg.GetPixel(x + 1, y - 1) },
-                        { modifiedImg.GetPixel(x - 1, y), modifiedImg.GetPixel(x, y), modifiedImg.GetPixel(x + 1, y) },
-                        { modifiedImg.GetPixel(x - 1, y + 1), modifiedImg.GetPixel(x, y + 1), modifiedImg.GetPixel(x + 1, y + 1) } };
+                    Color[,] colorsMatrix = getColorsMatrix(x, y);
 
-                    double red =
-                        ((colorsMatrix[0,0].R * kernel[0, 0] +
-                        colorsMatrix[1, 0].R * kernel[1, 0] + 
-                        colorsMatrix[2, 0].R * kernel[2, 0] +
-                        colorsMatrix[0, 1].R * kernel[0, 1] +
-                        colorsMatrix[1, 1].R * kernel[1, 1] + 
-                        colorsMatrix[2, 1].R * kernel[2, 1] +
-                        colorsMatrix[0, 2].R * kernel[0, 2] +
-                        colorsMatrix[1, 2].R * kernel[1, 2] +
-                        colorsMatrix[2, 2].R * kernel[2, 2]) / divisor ) + offset;
-                    double green =
-                        ((colorsMatrix[0, 0].G * kernel[0, 0] +
-                        colorsMatrix[1, 0].G * kernel[1, 0] +
-                        colorsMatrix[2, 0].G * kernel[2, 0] +
-                        colorsMatrix[0, 1].G * kernel[0, 1] +
-                        colorsMatrix[1, 1].G * kernel[1, 1] +
-                        colorsMatrix[2, 1].G * kernel[2, 1] +
-                        colorsMatrix[0, 2].G * kernel[0, 2] +
-                        colorsMatrix[1, 2].G * kernel[1, 2] +
-                        colorsMatrix[2, 2].G * kernel[2, 2]) / divisor ) + offset;
-                    double blue =
-                        ((colorsMatrix[0, 0].B * kernel[0, 0] +
-                        colorsMatrix[1, 0].B * kernel[1, 0] +
-                        colorsMatrix[2, 0].B * kernel[2, 0] +
-                        colorsMatrix[0, 1].B * kernel[0, 1] +
-                        colorsMatrix[1, 1].B * kernel[1, 1] +
-                        colorsMatrix[2, 1].B * kernel[2, 1] +
-                        colorsMatrix[0, 2].B * kernel[0, 2] +
-                        colorsMatrix[1, 2].B * kernel[1, 2] +
-                        colorsMatrix[2, 2].B * kernel[2, 2]) / divisor ) + offset;
+                    double red = ( getRedChannelFromKernel(colorsMatrix, kernel) / divisor ) + offset;
+                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1,1] = Color.FromArgb((int)red, (int)green, (int)blue);
+                    colorsMatrix[1,1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
                 }
@@ -243,60 +250,19 @@ namespace FilteringApp
 
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
 
-            for (int x = 1; x < modifiedImg.Width - 1; x++)
+            for (int x = 0; x < modifiedImg.Width; x++)
             {
-                for (int y = 1; y < modifiedImg.Height - 1; y++)
+                for (int y = 0; y < modifiedImg.Height; y++)
                 {
-                    Color[,] colorsMatrix = new Color[3, 3] {
-                        { modifiedImg.GetPixel(x - 1, y - 1), modifiedImg.GetPixel(x, y - 1), modifiedImg.GetPixel(x + 1, y - 1) },
-                        { modifiedImg.GetPixel(x - 1, y), modifiedImg.GetPixel(x, y), modifiedImg.GetPixel(x + 1, y) },
-                        { modifiedImg.GetPixel(x - 1, y + 1), modifiedImg.GetPixel(x, y + 1), modifiedImg.GetPixel(x + 1, y + 1) } };
+                    Color[,] colorsMatrix = getColorsMatrix(x, y);
 
-                    double red =
-                        ((colorsMatrix[0, 0].R * kernel[0, 0] +
-                        colorsMatrix[1, 0].R * kernel[1, 0] +
-                        colorsMatrix[2, 0].R * kernel[2, 0] +
-                        colorsMatrix[0, 1].R * kernel[0, 1] +
-                        colorsMatrix[1, 1].R * kernel[1, 1] +
-                        colorsMatrix[2, 1].R * kernel[2, 1] +
-                        colorsMatrix[0, 2].R * kernel[0, 2] +
-                        colorsMatrix[1, 2].R * kernel[1, 2] +
-                        colorsMatrix[2, 2].R * kernel[2, 2]) / divisor) + offset;
-                    double green =
-                        ((colorsMatrix[0, 0].G * kernel[0, 0] +
-                        colorsMatrix[1, 0].G * kernel[1, 0] +
-                        colorsMatrix[2, 0].G * kernel[2, 0] +
-                        colorsMatrix[0, 1].G * kernel[0, 1] +
-                        colorsMatrix[1, 1].G * kernel[1, 1] +
-                        colorsMatrix[2, 1].G * kernel[2, 1] +
-                        colorsMatrix[0, 2].G * kernel[0, 2] +
-                        colorsMatrix[1, 2].G * kernel[1, 2] +
-                        colorsMatrix[2, 2].G * kernel[2, 2]) / divisor) + offset;
-                    double blue =
-                        ((colorsMatrix[0, 0].B * kernel[0, 0] +
-                        colorsMatrix[1, 0].B * kernel[1, 0] +
-                        colorsMatrix[2, 0].B * kernel[2, 0] +
-                        colorsMatrix[0, 1].B * kernel[0, 1] +
-                        colorsMatrix[1, 1].B * kernel[1, 1] +
-                        colorsMatrix[2, 1].B * kernel[2, 1] +
-                        colorsMatrix[0, 2].B * kernel[0, 2] +
-                        colorsMatrix[1, 2].B * kernel[1, 2] +
-                        colorsMatrix[2, 2].B * kernel[2, 2]) / divisor) + offset;
+                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1, 1] = Color.FromArgb((int)red, (int)green, (int)blue);
+                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
                 }
@@ -313,60 +279,19 @@ namespace FilteringApp
 
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
 
-            for (int x = 1; x < modifiedImg.Width - 1; x++)
+            for (int x = 0; x < modifiedImg.Width; x++)
             {
-                for (int y = 1; y < modifiedImg.Height - 1; y++)
+                for (int y = 0; y < modifiedImg.Height; y++)
                 {
-                    Color[,] colorsMatrix = new Color[3, 3] {
-                        { modifiedImg.GetPixel(x - 1, y - 1), modifiedImg.GetPixel(x, y - 1), modifiedImg.GetPixel(x + 1, y - 1) },
-                        { modifiedImg.GetPixel(x - 1, y), modifiedImg.GetPixel(x, y), modifiedImg.GetPixel(x + 1, y) },
-                        { modifiedImg.GetPixel(x - 1, y + 1), modifiedImg.GetPixel(x, y + 1), modifiedImg.GetPixel(x + 1, y + 1) } };
+                    Color[,] colorsMatrix = getColorsMatrix(x, y);
 
-                    double red =
-                        ((colorsMatrix[0, 0].R * kernel[0, 0] +
-                        colorsMatrix[1, 0].R * kernel[1, 0] +
-                        colorsMatrix[2, 0].R * kernel[2, 0] +
-                        colorsMatrix[0, 1].R * kernel[0, 1] +
-                        colorsMatrix[1, 1].R * kernel[1, 1] +
-                        colorsMatrix[2, 1].R * kernel[2, 1] +
-                        colorsMatrix[0, 2].R * kernel[0, 2] +
-                        colorsMatrix[1, 2].R * kernel[1, 2] +
-                        colorsMatrix[2, 2].R * kernel[2, 2]) / divisor) + offset;
-                    double green =
-                        ((colorsMatrix[0, 0].G * kernel[0, 0] +
-                        colorsMatrix[1, 0].G * kernel[1, 0] +
-                        colorsMatrix[2, 0].G * kernel[2, 0] +
-                        colorsMatrix[0, 1].G * kernel[0, 1] +
-                        colorsMatrix[1, 1].G * kernel[1, 1] +
-                        colorsMatrix[2, 1].G * kernel[2, 1] +
-                        colorsMatrix[0, 2].G * kernel[0, 2] +
-                        colorsMatrix[1, 2].G * kernel[1, 2] +
-                        colorsMatrix[2, 2].G * kernel[2, 2]) / divisor) + offset;
-                    double blue =
-                        ((colorsMatrix[0, 0].B * kernel[0, 0] +
-                        colorsMatrix[1, 0].B * kernel[1, 0] +
-                        colorsMatrix[2, 0].B * kernel[2, 0] +
-                        colorsMatrix[0, 1].B * kernel[0, 1] +
-                        colorsMatrix[1, 1].B * kernel[1, 1] +
-                        colorsMatrix[2, 1].B * kernel[2, 1] +
-                        colorsMatrix[0, 2].B * kernel[0, 2] +
-                        colorsMatrix[1, 2].B * kernel[1, 2] +
-                        colorsMatrix[2, 2].B * kernel[2, 2]) / divisor) + offset;
+                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1, 1] = Color.FromArgb((int)red, (int)green, (int)blue);
+                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
                 }
@@ -383,60 +308,19 @@ namespace FilteringApp
 
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
 
-            for (int x = 1; x < modifiedImg.Width - 1; x++)
+            for (int x = 0; x < modifiedImg.Width; x++)
             {
-                for (int y = 1; y < modifiedImg.Height - 1; y++)
+                for (int y = 0; y < modifiedImg.Height; y++)
                 {
-                    Color[,] colorsMatrix = new Color[3, 3] {
-                        { modifiedImg.GetPixel(x - 1, y - 1), modifiedImg.GetPixel(x, y - 1), modifiedImg.GetPixel(x + 1, y - 1) },
-                        { modifiedImg.GetPixel(x - 1, y), modifiedImg.GetPixel(x, y), modifiedImg.GetPixel(x + 1, y) },
-                        { modifiedImg.GetPixel(x - 1, y + 1), modifiedImg.GetPixel(x, y + 1), modifiedImg.GetPixel(x + 1, y + 1) } };
+                    Color[,] colorsMatrix = getColorsMatrix(x, y);
 
-                    double red =
-                        ((colorsMatrix[0, 0].R * kernel[0, 0] +
-                        colorsMatrix[1, 0].R * kernel[1, 0] +
-                        colorsMatrix[2, 0].R * kernel[2, 0] +
-                        colorsMatrix[0, 1].R * kernel[0, 1] +
-                        colorsMatrix[1, 1].R * kernel[1, 1] +
-                        colorsMatrix[2, 1].R * kernel[2, 1] +
-                        colorsMatrix[0, 2].R * kernel[0, 2] +
-                        colorsMatrix[1, 2].R * kernel[1, 2] +
-                        colorsMatrix[2, 2].R * kernel[2, 2]) / divisor) + offset;
-                    double green =
-                        ((colorsMatrix[0, 0].G * kernel[0, 0] +
-                        colorsMatrix[1, 0].G * kernel[1, 0] +
-                        colorsMatrix[2, 0].G * kernel[2, 0] +
-                        colorsMatrix[0, 1].G * kernel[0, 1] +
-                        colorsMatrix[1, 1].G * kernel[1, 1] +
-                        colorsMatrix[2, 1].G * kernel[2, 1] +
-                        colorsMatrix[0, 2].G * kernel[0, 2] +
-                        colorsMatrix[1, 2].G * kernel[1, 2] +
-                        colorsMatrix[2, 2].G * kernel[2, 2]) / divisor) + offset;
-                    double blue =
-                        ((colorsMatrix[0, 0].B * kernel[0, 0] +
-                        colorsMatrix[1, 0].B * kernel[1, 0] +
-                        colorsMatrix[2, 0].B * kernel[2, 0] +
-                        colorsMatrix[0, 1].B * kernel[0, 1] +
-                        colorsMatrix[1, 1].B * kernel[1, 1] +
-                        colorsMatrix[2, 1].B * kernel[2, 1] +
-                        colorsMatrix[0, 2].B * kernel[0, 2] +
-                        colorsMatrix[1, 2].B * kernel[1, 2] +
-                        colorsMatrix[2, 2].B * kernel[2, 2]) / divisor) + offset;
+                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1, 1] = Color.FromArgb((int)red, (int)green, (int)blue);
+                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
                 }
@@ -453,60 +337,19 @@ namespace FilteringApp
 
             Bitmap afterModificationMap = new Bitmap(modifiedImg.Width, modifiedImg.Height);
 
-            for (int x = 1; x < modifiedImg.Width - 1; x++)
+            for (int x = 0; x < modifiedImg.Width; x++)
             {
-                for (int y = 1; y < modifiedImg.Height - 1; y++)
+                for (int y = 0; y < modifiedImg.Height; y++)
                 {
-                    Color[,] colorsMatrix = new Color[3, 3] {
-                        { modifiedImg.GetPixel(x - 1, y - 1), modifiedImg.GetPixel(x, y - 1), modifiedImg.GetPixel(x + 1, y - 1) },
-                        { modifiedImg.GetPixel(x - 1, y), modifiedImg.GetPixel(x, y), modifiedImg.GetPixel(x + 1, y) },
-                        { modifiedImg.GetPixel(x - 1, y + 1), modifiedImg.GetPixel(x, y + 1), modifiedImg.GetPixel(x + 1, y + 1) } };
+                    Color[,] colorsMatrix = getColorsMatrix(x, y);
 
-                    double red =
-                        ((colorsMatrix[0, 0].R * kernel[0, 0] +
-                        colorsMatrix[1, 0].R * kernel[1, 0] +
-                        colorsMatrix[2, 0].R * kernel[2, 0] +
-                        colorsMatrix[0, 1].R * kernel[0, 1] +
-                        colorsMatrix[1, 1].R * kernel[1, 1] +
-                        colorsMatrix[2, 1].R * kernel[2, 1] +
-                        colorsMatrix[0, 2].R * kernel[0, 2] +
-                        colorsMatrix[1, 2].R * kernel[1, 2] +
-                        colorsMatrix[2, 2].R * kernel[2, 2]) / divisor) + offset;
-                    double green =
-                        ((colorsMatrix[0, 0].G * kernel[0, 0] +
-                        colorsMatrix[1, 0].G * kernel[1, 0] +
-                        colorsMatrix[2, 0].G * kernel[2, 0] +
-                        colorsMatrix[0, 1].G * kernel[0, 1] +
-                        colorsMatrix[1, 1].G * kernel[1, 1] +
-                        colorsMatrix[2, 1].G * kernel[2, 1] +
-                        colorsMatrix[0, 2].G * kernel[0, 2] +
-                        colorsMatrix[1, 2].G * kernel[1, 2] +
-                        colorsMatrix[2, 2].G * kernel[2, 2]) / divisor) + offset;
-                    double blue =
-                        ((colorsMatrix[0, 0].B * kernel[0, 0] +
-                        colorsMatrix[1, 0].B * kernel[1, 0] +
-                        colorsMatrix[2, 0].B * kernel[2, 0] +
-                        colorsMatrix[0, 1].B * kernel[0, 1] +
-                        colorsMatrix[1, 1].B * kernel[1, 1] +
-                        colorsMatrix[2, 1].B * kernel[2, 1] +
-                        colorsMatrix[0, 2].B * kernel[0, 2] +
-                        colorsMatrix[1, 2].B * kernel[1, 2] +
-                        colorsMatrix[2, 2].B * kernel[2, 2]) / divisor) + offset;
+                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    if (red > 255)
-                        red = 255;
-                    if (green > 255)
-                        green = 255;
-                    if (blue > 255)
-                        blue = 255;
-                    if (red < 0)
-                        red = 0;
-                    if (green < 0)
-                        green = 0;
-                    if (blue < 0)
-                        blue = 0;
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1, 1] = Color.FromArgb((int)red, (int)green, (int)blue);
+                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
                     afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
                 }
