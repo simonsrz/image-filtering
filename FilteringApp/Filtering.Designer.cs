@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.initialImage = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.modifiedImage = new System.Windows.Forms.PictureBox();
@@ -52,23 +51,27 @@
             this.reloadImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.initialImage)).BeginInit();
+            this.initialImage = new System.Windows.Forms.PictureBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.kernelGridButton = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.kernelColumns = new System.Windows.Forms.NumericUpDown();
+            this.kernelRows = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.initialImage)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).BeginInit();
             this.SuspendLayout();
-            // 
-            // initialImage
-            // 
-            this.initialImage.Location = new System.Drawing.Point(6, 47);
-            this.initialImage.Name = "initialImage";
-            this.initialImage.Size = new System.Drawing.Size(603, 547);
-            this.initialImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.initialImage.TabIndex = 0;
-            this.initialImage.TabStop = false;
             // 
             // pictureBox2
             // 
@@ -77,7 +80,6 @@
             this.pictureBox2.Size = new System.Drawing.Size(0, 0);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -297,11 +299,166 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Images";
             // 
+            // initialImage
+            // 
+            this.initialImage.Location = new System.Drawing.Point(6, 47);
+            this.initialImage.Name = "initialImage";
+            this.initialImage.Size = new System.Drawing.Size(603, 547);
+            this.initialImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.initialImage.TabIndex = 0;
+            this.initialImage.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.kernelGridButton);
+            this.groupBox4.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.kernelColumns);
+            this.groupBox4.Controls.Add(this.kernelRows);
+            this.groupBox4.Location = new System.Drawing.Point(18, 665);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(1544, 607);
+            this.groupBox4.TabIndex = 7;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Additional filter";
+            // 
+            // kernelGridButton
+            // 
+            this.kernelGridButton.Location = new System.Drawing.Point(464, 66);
+            this.kernelGridButton.Name = "kernelGridButton";
+            this.kernelGridButton.Size = new System.Drawing.Size(139, 39);
+            this.kernelGridButton.TabIndex = 6;
+            this.kernelGridButton.Text = "Create";
+            this.kernelGridButton.UseVisualStyleBackColor = true;
+            this.kernelGridButton.Click += new System.EventHandler(this.kernelGridButton_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 9;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 121);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 9;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(588, 424);
+            this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(162, 144);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(0, 32);
+            this.label4.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(273, 64);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 37);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "×";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(162, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 32);
+            this.label2.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(15, 58);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(110, 45);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Kernel";
+            // 
+            // kernelColumns
+            // 
+            this.kernelColumns.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.kernelColumns.Location = new System.Drawing.Point(141, 66);
+            this.kernelColumns.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.kernelColumns.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.kernelColumns.Name = "kernelColumns";
+            this.kernelColumns.Size = new System.Drawing.Size(126, 39);
+            this.kernelColumns.TabIndex = 1;
+            this.kernelColumns.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // kernelRows
+            // 
+            this.kernelRows.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.kernelRows.Location = new System.Drawing.Point(316, 66);
+            this.kernelRows.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.kernelRows.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.kernelRows.Name = "kernelRows";
+            this.kernelRows.Size = new System.Drawing.Size(126, 39);
+            this.kernelRows.TabIndex = 0;
+            this.kernelRows.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1574, 916);
+            this.ClientSize = new System.Drawing.Size(1574, 1284);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -311,7 +468,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Filtering";
             this.Text = "Filtering app";
-            ((System.ComponentModel.ISupportInitialize)(this.initialImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -319,14 +475,17 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.initialImage)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private PictureBox initialImage;
         private PictureBox pictureBox2;
         private FlowLayoutPanel flowLayoutPanel1;
         private PictureBox modifiedImage;
@@ -350,5 +509,15 @@
         private Button button3;
         private Button button2;
         private Button blurButton;
+        private GroupBox groupBox4;
+        private Label label1;
+        private NumericUpDown kernelColumns;
+        private NumericUpDown kernelRows;
+        private Label label2;
+        private PictureBox initialImage;
+        private Label label3;
+        private Label label4;
+        private Button kernelGridButton;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
