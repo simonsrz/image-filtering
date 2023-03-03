@@ -9,11 +9,22 @@ namespace FilteringApp
         Bitmap modifiedImg = null;
         Bitmap initialImg = null;
         FunctionFilters functionFilter = new FunctionFilters();
-        ConvolutionFilters convolutionFilter = new ConvolutionFilters();
+        List<ConvolutionFilter> convFilters = new List<ConvolutionFilter>();
 
         public Filtering()
         {
             InitializeComponent();
+            convFilters.Add(new BlurFillter());
+            convFilters.Add(new GaussianBlurFillter());
+            convFilters.Add(new SharpenFilter());
+            convFilters.Add(new EdgeDetectionFilter());
+            convFilters.Add(new EmbossFilter());
+            loadComboBox.Items.Add(convFilters[0].filterName);
+            loadComboBox.Items.Add(convFilters[1].filterName);
+            loadComboBox.Items.Add(convFilters[2].filterName);
+            loadComboBox.Items.Add(convFilters[3].filterName);
+            loadComboBox.Items.Add(convFilters[4].filterName);
+            loadComboBox.SelectedIndex = 0;
         }
 
         private void loadImage_Click(object sender, EventArgs e)
@@ -69,56 +80,93 @@ namespace FilteringApp
         }
         private void blurButton_Click(object sender, EventArgs e)
         {
-            double[,] kernel = new double[3,3] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
-            int offset = 0;
-            int divisor = 9;
-            modifiedImage.Image = convolutionFilter.blurFilter(modifiedImg, kernel, 1, 1, offset, divisor);
-            modifiedImg = convolutionFilter.blurFilter(modifiedImg, kernel, 1, 1, offset, divisor);
+            modifiedImage.Image = convFilters[0].applyFilter(modifiedImg);
+            modifiedImg = convFilters[0].applyFilter(modifiedImg);
         }
 
         private void gaussianBlurButton_Click(object sender, EventArgs e)
         {
-            double[,] kernel = new double[3, 3] { { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 } };
-            int offset = 0;
-            int divisor = 16;
-
-            modifiedImage.Image = convolutionFilter.gaussianBlurFilter(modifiedImg, kernel, 1, 1, offset, divisor);
-            modifiedImg = convolutionFilter.gaussianBlurFilter(modifiedImg, kernel, 1, 1, offset, divisor);
+            modifiedImage.Image = convFilters[1].applyFilter(modifiedImg);
+            modifiedImg = convFilters[1].applyFilter(modifiedImg);
         }
 
         private void sharpenButton_Click(object sender, EventArgs e)
         {
-            double[,] kernel = new double[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
-            int offset = 0;
-            int divisor = 1;
-
-            modifiedImage.Image = convolutionFilter.sharpenFilter(modifiedImg, kernel, 1, 1, offset, divisor);
-            modifiedImg = convolutionFilter.sharpenFilter(modifiedImg, kernel, 1, 1, offset, divisor);
+            modifiedImage.Image = convFilters[2].applyFilter(modifiedImg);
+            modifiedImg = convFilters[2].applyFilter(modifiedImg);
         }
 
         private void edgeDetectionButton_Click(object sender, EventArgs e)
         {
-            double[,] kernel = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
-            int offset = 0;
-            int divisor = 1;
-
-            modifiedImage.Image = convolutionFilter.edgeDetectionFilter(modifiedImg, kernel, 1, 1, offset, divisor);
-            modifiedImg = convolutionFilter.edgeDetectionFilter(modifiedImg, kernel, 1, 1, offset, divisor);
+            modifiedImage.Image = convFilters[3].applyFilter(modifiedImg);
+            modifiedImg = convFilters[3].applyFilter(modifiedImg);
         }
 
         private void embossButton_Click(object sender, EventArgs e)
         {
-            double[,] kernel = new double[3, 3] { { -1, -1, -1 }, { 0, 1, 0 }, { 1, 1, 1 } };
-            int offset = 0;
-            int divisor = 1;
-
-            modifiedImage.Image = convolutionFilter.embossFilter(modifiedImg, kernel, 1, 1, offset, divisor);
-            modifiedImg = convolutionFilter.embossFilter(modifiedImg, kernel, 1, 1, offset, divisor);
+            modifiedImage.Image = convFilters[4].applyFilter(modifiedImg);
+            modifiedImg = convFilters[4].applyFilter(modifiedImg);
         }
 
         private void kernelGridButton_Click(object sender, EventArgs e)
         {
+            while (kernelEditorPanel.Controls.Count > 0)
+            {
+                kernelEditorPanel.Controls[0].Dispose();
+            }
 
+            for (int i = 0; i < kernelColumns.Value; i++)
+            {
+                for (int j = 0; j < kernelRows.Value; j++)
+                {
+                    TextBox input = new TextBox();
+                    input.Text = "0";
+                    kernelEditorPanel.Controls.Add(input, i, j);
+                }
+            }
+            anchorX.Maximum = kernelColumns.Value - 1;
+            anchorX.Value = Math.Floor(kernelColumns.Value / 2);
+            anchorY.Maximum = kernelRows.Value - 1;
+            anchorY.Value = Math.Floor(kernelRows.Value / 2);
+        }
+
+        private void calcDivisorButton_Click(object sender, EventArgs e)
+        {
+            int sum = 0;
+            for (int i = 0; i < kernelColumns.Value; i++)
+            {
+                for (int j = 0; j < kernelRows.Value; j++)
+                {
+                    sum += Int32.Parse(kernelEditorPanel.GetControlFromPosition(i, j).Text);
+                }
+            }
+            divisorValue.Text = sum.ToString();
+        }
+
+        private void loadKernel_Click(object sender, EventArgs e)
+        {
+            while (kernelEditorPanel.Controls.Count > 0)
+            {
+                kernelEditorPanel.Controls[0].Dispose();
+            }
+
+            kernelColumns.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(1);
+            kernelRows.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(0);
+            divisorValue.Text = convFilters[loadComboBox.SelectedIndex].divisor.ToString();
+            divisorValue.Text = convFilters[loadComboBox.SelectedIndex].divisor.ToString();
+            offsetValue.Text = convFilters[loadComboBox.SelectedIndex].offset.ToString();
+            anchorX.Value = convFilters[loadComboBox.SelectedIndex].anchorX;
+            anchorY.Value = convFilters[loadComboBox.SelectedIndex].anchorY;
+
+            for (int i = 0; i < kernelColumns.Value; i++)
+            {
+                for (int j = 0; j < kernelRows.Value; j++)
+                {
+                    TextBox input = new TextBox();
+                    input.Text = convFilters[loadComboBox.SelectedIndex].kernel[i, j].ToString();
+                    kernelEditorPanel.Controls.Add(input, i, j);
+                }
+            }
         }
     }
 }

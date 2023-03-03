@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FilteringApp
 {
-    internal class Filter
+    public class Filter
     {
         public int[] rgbValidation(int red, int green, int blue)
         {

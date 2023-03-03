@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace FilteringApp
 {
-    internal class ConvolutionFilters : Filter
+    public abstract class ConvolutionFilter : Filter
     {
+
+        public abstract string filterName { get; }
+        public abstract int divisor { get; }
+        public abstract int offset { get; }
+        public abstract int anchorX { get; }
+        public abstract int anchorY { get; }
+        public abstract int[,] kernel { get; }
+
         private Color[,] getColorsMatrix(int x, int y, Bitmap originalImage)
         {
             Color[,] colorsMatrix = new Color[3, 3];
@@ -22,7 +30,7 @@ namespace FilteringApp
             return colorsMatrix;
         }
 
-        private double getRedChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        private double getRedChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double red = 0;
             for (int i = 0; i < 3; i++)
@@ -34,7 +42,7 @@ namespace FilteringApp
             }
             return red;
         }
-        private double getGreenChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        private double getGreenChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double green = 0;
             for (int i = 0; i < 3; i++)
@@ -46,7 +54,7 @@ namespace FilteringApp
             }
             return green;
         }
-        private double getBlueChannelFromKernel(Color[,] colorsMatrix, double[,] kernel)
+        private double getBlueChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double blue = 0;
             for (int i = 0; i < 3; i++)
@@ -59,7 +67,7 @@ namespace FilteringApp
             return blue;
         }
 
-        public Bitmap blurFilter(Bitmap originalImage, double[,] kernel, int anchorX, int anchorY, int offset, int divisor)
+        public Bitmap applyFilter(Bitmap originalImage)
         {
             Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
             int height = kernel.GetLength(0);
@@ -84,108 +92,259 @@ namespace FilteringApp
             }
             return afterModificationMap;
         }
+    }
 
-        public Bitmap gaussianBlurFilter(Bitmap originalImage, double[,] kernel, int anchorX, int anchorY, int offset, int divisor)
+    public class BlurFillter : ConvolutionFilter
+    {
+        public override string filterName
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
-
-            for (int x = anchorX; x < originalImage.Width - (width + anchorX + 1); x++)
-            {
-                for (int y = anchorY; y < originalImage.Height - (height + anchorY + 1); y++)
-                {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, originalImage);
-
-                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
-
-                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
-
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
-                }
-            }
-            return afterModificationMap;
+            get { return "Blur Filter"; }
         }
 
-        public Bitmap sharpenFilter(Bitmap originalImage, double[,] kernel, int anchorX, int anchorY, int offset, int divisor)
+
+        private int _divisor = 9;
+        public override int divisor
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
-
-            for (int x = anchorX; x < originalImage.Width - (width + anchorX + 1); x++)
-            {
-                for (int y = anchorY; y < originalImage.Height - (height + anchorY + 1); y++)
-                {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, originalImage);
-
-                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
-
-                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
-
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
-                }
-            }
-            return afterModificationMap;
+            get { return _divisor; }
         }
 
-        public Bitmap edgeDetectionFilter(Bitmap originalImage, double[,] kernel, int anchorX, int anchorY, int offset, int divisor)
+
+        private int _offset = 0;
+        public override int offset
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
-
-            for (int x = anchorX; x < originalImage.Width - (width + anchorX + 1); x++)
-            {
-                for (int y = anchorY; y < originalImage.Height - (height + anchorY + 1); y++)
-                {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, originalImage);
-
-                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
-
-                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
-
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
-                }
-            }
-            return afterModificationMap;
+            get { return _offset; }
         }
-        public Bitmap embossFilter(Bitmap originalImage, double[,] kernel, int anchorX, int anchorY, int offset, int divisor)
+
+
+        int[,] _kernel = new int[3, 3] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
+
+        public override int[,] kernel
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
+            get { return _kernel; }
+        }
 
-            for (int x = anchorX; x < originalImage.Width - (width + anchorX + 1); x++)
-            {
-                for (int y = anchorY; y < originalImage.Height - (height + anchorY + 1); y++)
-                {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, originalImage);
+        int _anchorX = 1;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
 
-                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+        int _anchorY = 1;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+    }
 
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
+    public class GaussianBlurFillter : ConvolutionFilter
+    {
+        public override string filterName
+        {
+            get { return "Gaussian Blur Filter"; }
+        }
 
-                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
-                }
-            }
-            return afterModificationMap;
+        private int _divisor = 18;
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+
+
+        private int _offset = 0;
+        public override int offset
+        {
+            get { return _offset; }
+        }
+
+
+        int[,] _kernel = new int[3, 3] { { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 } };
+
+    public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+
+        int _anchorX = 1;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+
+        int _anchorY = 1;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+    }
+
+    public class SharpenFilter : ConvolutionFilter
+    {
+        public override string filterName
+        {
+            get { return "Sharpen Filter"; }
+        }
+
+
+        private int _divisor = 1;
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+
+
+        private int _offset = 0;
+        public override int offset
+        {
+            get { return _offset; }
+        }
+
+
+        int[,] _kernel = new int[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+
+        public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+
+        int _anchorX = 1;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+
+        int _anchorY = 1;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+    }
+
+    public class EdgeDetectionFilter : ConvolutionFilter
+    {
+        public override string filterName
+        {
+            get { return "Edge Detection Filter"; }
+        }
+
+
+        private int _divisor = 1;
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+
+
+        private int _offset = 0;
+        public override int offset
+        {
+            get { return _offset; }
+        }
+
+
+        int[,] _kernel = new int[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+
+        public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+
+        int _anchorX = 1;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+
+        int _anchorY = 1;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+    }
+
+    public class EmbossFilter : ConvolutionFilter
+    {
+        public override string filterName
+        {
+            get { return "Emboss Filter"; }
+        }
+
+
+        private int _divisor = 1;
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+
+
+        private int _offset = 0;
+        public override int offset
+        {
+            get { return _offset; }
+        }
+
+
+        int[,] _kernel = new int[3, 3] { { -1, -1, -1 }, { 0, 1, 0 }, { 1, 1, 1 } };
+
+        public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+
+        int _anchorX = 1;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+
+        int _anchorY = 1;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+    }
+
+    public class CustomFilter : ConvolutionFilter
+    {
+        string _name;
+        int[,] _kernel = new int[,] {};
+        private int _divisor;
+        private int _offset;
+        int _anchorX;
+        int _anchorY;
+    
+        public CustomFilter(string name, int[,] kernel, int offset, int divisor, int anchorX, int anchorY)
+        {
+            _name = name;
+            _kernel = kernel;
+            _offset = offset;
+            _divisor = divisor;
+            _anchorX = anchorX;
+            _anchorY = anchorY;
+        }
+        public override string filterName
+        {
+            get { return _name; }
+        }
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+        public override int offset
+        {
+            get { return _offset; }
+        }
+        public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+        public override int anchorY
+        {
+            get { return _anchorY; }
         }
     }
 }

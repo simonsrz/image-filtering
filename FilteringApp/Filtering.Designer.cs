@@ -53,14 +53,25 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.initialImage = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.loadKernel = new System.Windows.Forms.Button();
+            this.loadComboBox = new System.Windows.Forms.ComboBox();
+            this.calcDivisorButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.anchorY = new System.Windows.Forms.NumericUpDown();
+            this.anchorX = new System.Windows.Forms.NumericUpDown();
+            this.offsetValue = new System.Windows.Forms.TextBox();
+            this.divisorValue = new System.Windows.Forms.TextBox();
             this.kernelGridButton = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.kernelEditorPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.kernelColumns = new System.Windows.Forms.NumericUpDown();
             this.kernelRows = new System.Windows.Forms.NumericUpDown();
+            this.kernelColumns = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -69,8 +80,10 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.initialImage)).BeginInit();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox2
@@ -310,14 +323,25 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.loadKernel);
+            this.groupBox4.Controls.Add(this.loadComboBox);
+            this.groupBox4.Controls.Add(this.calcDivisorButton);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.anchorY);
+            this.groupBox4.Controls.Add(this.anchorX);
+            this.groupBox4.Controls.Add(this.offsetValue);
+            this.groupBox4.Controls.Add(this.divisorValue);
             this.groupBox4.Controls.Add(this.kernelGridButton);
-            this.groupBox4.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox4.Controls.Add(this.kernelEditorPanel);
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.kernelColumns);
             this.groupBox4.Controls.Add(this.kernelRows);
+            this.groupBox4.Controls.Add(this.kernelColumns);
             this.groupBox4.Location = new System.Drawing.Point(18, 665);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(1544, 607);
@@ -325,42 +349,127 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Additional filter";
             // 
+            // loadKernel
+            // 
+            this.loadKernel.Location = new System.Drawing.Point(626, 180);
+            this.loadKernel.Name = "loadKernel";
+            this.loadKernel.Size = new System.Drawing.Size(200, 46);
+            this.loadKernel.TabIndex = 17;
+            this.loadKernel.Text = "Load";
+            this.loadKernel.UseVisualStyleBackColor = true;
+            this.loadKernel.Click += new System.EventHandler(this.loadKernel_Click);
+            // 
+            // loadComboBox
+            // 
+            this.loadComboBox.FormattingEnabled = true;
+            this.loadComboBox.Location = new System.Drawing.Point(626, 121);
+            this.loadComboBox.Name = "loadComboBox";
+            this.loadComboBox.Size = new System.Drawing.Size(200, 40);
+            this.loadComboBox.TabIndex = 16;
+            // 
+            // calcDivisorButton
+            // 
+            this.calcDivisorButton.Location = new System.Drawing.Point(711, 290);
+            this.calcDivisorButton.Name = "calcDivisorButton";
+            this.calcDivisorButton.Size = new System.Drawing.Size(115, 39);
+            this.calcDivisorButton.TabIndex = 15;
+            this.calcDivisorButton.Text = "Auto";
+            this.calcDivisorButton.UseVisualStyleBackColor = true;
+            this.calcDivisorButton.Click += new System.EventHandler(this.calcDivisorButton_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(677, 244);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(87, 32);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Divisor";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(626, 365);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 32);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Offset";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(677, 418);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(90, 32);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Anchor";
+            // 
+            // anchorY
+            // 
+            this.anchorY.Location = new System.Drawing.Point(737, 463);
+            this.anchorY.Name = "anchorY";
+            this.anchorY.Size = new System.Drawing.Size(89, 39);
+            this.anchorY.TabIndex = 11;
+            // 
+            // anchorX
+            // 
+            this.anchorX.Location = new System.Drawing.Point(626, 463);
+            this.anchorX.Name = "anchorX";
+            this.anchorX.Size = new System.Drawing.Size(89, 39);
+            this.anchorX.TabIndex = 10;
+            // 
+            // offsetValue
+            // 
+            this.offsetValue.Location = new System.Drawing.Point(711, 362);
+            this.offsetValue.Name = "offsetValue";
+            this.offsetValue.Size = new System.Drawing.Size(115, 39);
+            this.offsetValue.TabIndex = 9;
+            // 
+            // divisorValue
+            // 
+            this.divisorValue.Location = new System.Drawing.Point(626, 290);
+            this.divisorValue.Name = "divisorValue";
+            this.divisorValue.Size = new System.Drawing.Size(79, 39);
+            this.divisorValue.TabIndex = 8;
+            // 
             // kernelGridButton
             // 
             this.kernelGridButton.Location = new System.Drawing.Point(464, 66);
             this.kernelGridButton.Name = "kernelGridButton";
             this.kernelGridButton.Size = new System.Drawing.Size(139, 39);
             this.kernelGridButton.TabIndex = 6;
-            this.kernelGridButton.Text = "Create";
+            this.kernelGridButton.Text = "Set";
             this.kernelGridButton.UseVisualStyleBackColor = true;
             this.kernelGridButton.Click += new System.EventHandler(this.kernelGridButton_Click);
             // 
-            // tableLayoutPanel1
+            // kernelEditorPanel
             // 
-            this.tableLayoutPanel1.ColumnCount = 9;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 121);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 9;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(588, 424);
-            this.tableLayoutPanel1.TabIndex = 7;
+            this.kernelEditorPanel.BackColor = System.Drawing.Color.Ivory;
+            this.kernelEditorPanel.ColumnCount = 9;
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.Location = new System.Drawing.Point(15, 121);
+            this.kernelEditorPanel.Name = "kernelEditorPanel";
+            this.kernelEditorPanel.Padding = new System.Windows.Forms.Padding(6);
+            this.kernelEditorPanel.RowCount = 9;
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.kernelEditorPanel.Size = new System.Drawing.Size(588, 466);
+            this.kernelEditorPanel.TabIndex = 7;
             // 
             // label4
             // 
@@ -399,33 +508,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Kernel";
             // 
-            // kernelColumns
-            // 
-            this.kernelColumns.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.kernelColumns.Location = new System.Drawing.Point(141, 66);
-            this.kernelColumns.Maximum = new decimal(new int[] {
-            9,
-            0,
-            0,
-            0});
-            this.kernelColumns.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.kernelColumns.Name = "kernelColumns";
-            this.kernelColumns.Size = new System.Drawing.Size(126, 39);
-            this.kernelColumns.TabIndex = 1;
-            this.kernelColumns.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            // 
             // kernelRows
             // 
             this.kernelRows.Increment = new decimal(new int[] {
@@ -433,7 +515,7 @@
             0,
             0,
             0});
-            this.kernelRows.Location = new System.Drawing.Point(316, 66);
+            this.kernelRows.Location = new System.Drawing.Point(141, 66);
             this.kernelRows.Maximum = new decimal(new int[] {
             9,
             0,
@@ -446,17 +528,55 @@
             0});
             this.kernelRows.Name = "kernelRows";
             this.kernelRows.Size = new System.Drawing.Size(126, 39);
-            this.kernelRows.TabIndex = 0;
+            this.kernelRows.TabIndex = 1;
             this.kernelRows.Value = new decimal(new int[] {
             3,
             0,
             0,
             0});
             // 
+            // kernelColumns
+            // 
+            this.kernelColumns.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.kernelColumns.Location = new System.Drawing.Point(316, 66);
+            this.kernelColumns.Maximum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.kernelColumns.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.kernelColumns.Name = "kernelColumns";
+            this.kernelColumns.Size = new System.Drawing.Size(126, 39);
+            this.kernelColumns.TabIndex = 0;
+            this.kernelColumns.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.LimeGreen;
+            this.button1.Location = new System.Drawing.Point(626, 529);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(200, 58);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "Save filter";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1574, 1284);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -465,6 +585,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Filtering";
             this.Text = "Filtering app";
@@ -478,8 +599,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.initialImage)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,13 +634,24 @@
         private Button blurButton;
         private GroupBox groupBox4;
         private Label label1;
-        private NumericUpDown kernelColumns;
         private NumericUpDown kernelRows;
+        private NumericUpDown kernelColumns;
         private Label label2;
         private PictureBox initialImage;
         private Label label3;
         private Label label4;
         private Button kernelGridButton;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel kernelEditorPanel;
+        private NumericUpDown anchorY;
+        private NumericUpDown anchorX;
+        private TextBox offsetValue;
+        private TextBox divisorValue;
+        private Label label5;
+        private Button calcDivisorButton;
+        private Label label7;
+        private Label label6;
+        private Button loadKernel;
+        private ComboBox loadComboBox;
+        private Button button1;
     }
 }
