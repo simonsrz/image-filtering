@@ -16,15 +16,15 @@ namespace FilteringApp
         public abstract int anchorY { get; }
         public abstract int[,] kernel { get; }
 
-        private Color[,] getColorsMatrix(int x, int y, Bitmap originalImage)
+        private Color[,] getColorsMatrix(int x, int y, int ancX, int ancY, Bitmap originalImage)
         {
-            Color[,] colorsMatrix = new Color[3, 3];
+            Color[,] colorsMatrix = new Color[kernel.GetLength(0), kernel.GetLength(1)];
 
-            for (int posX = 0; posX < 3; posX++)
+            for (int posX = 0; posX < kernel.GetLength(0); posX++)
             {
-                for (int posY = 0; posY < 3; posY++)
+                for (int posY = 0; posY < kernel.GetLength(1); posY++)
                 {
-                    colorsMatrix[posX, posY] = originalImage.GetPixel(x - 1 + posX, y - 1 + posY);
+                    colorsMatrix[posX, posY] = originalImage.GetPixel(x - ancX + posX, y - ancY + posY);
                 }
             }
             return colorsMatrix;
@@ -33,9 +33,9 @@ namespace FilteringApp
         private double getRedChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double red = 0;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < kernel.GetLength(0); i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < kernel.GetLength(1); j++)
                 {
                     red += colorsMatrix[i, j].R * kernel[i, j];
                 }
@@ -45,9 +45,9 @@ namespace FilteringApp
         private double getGreenChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double green = 0;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < kernel.GetLength(0); i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < kernel.GetLength(1); j++)
                 {
                     green += colorsMatrix[i, j].G * kernel[i, j];
                 }
@@ -57,9 +57,9 @@ namespace FilteringApp
         private double getBlueChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double blue = 0;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < kernel.GetLength(0); i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < kernel.GetLength(1); j++)
                 {
                     blue += colorsMatrix[i, j].B * kernel[i, j];
                 }
@@ -69,15 +69,15 @@ namespace FilteringApp
 
         public Bitmap applyFilter(Bitmap originalImage)
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
+            Bitmap afterModificationMap = new Bitmap( originalImage.Width, originalImage.Height);
+            int height = kernel.GetLength(1);
+            int width = kernel.GetLength(0);
 
-            for (int x = anchorX; x < originalImage.Width - (width + anchorX + 1); x++)
+            for (int x = anchorX; x < originalImage.Width - (width - anchorX - 1); x++)
             {
-                for (int y = anchorY; y < originalImage.Height - (height + anchorY + 1); y++)
+                for (int y = anchorY; y < originalImage.Height - (height - anchorY - 1); y++)
                 {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, originalImage);
+                    Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, originalImage);
 
                     double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
                     double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
@@ -85,9 +85,9 @@ namespace FilteringApp
 
                     int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[1, 1] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                    colorsMatrix[anchorX, anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[1, 1]);
+                    afterModificationMap.SetPixel(x, y, colorsMatrix[anchorX, anchorY]);
                 }
             }
             return afterModificationMap;

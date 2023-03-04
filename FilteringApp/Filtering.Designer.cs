@@ -53,6 +53,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.initialImage = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.applyFilterButton = new System.Windows.Forms.Button();
             this.loadKernel = new System.Windows.Forms.Button();
             this.loadComboBox = new System.Windows.Forms.ComboBox();
             this.calcDivisorButton = new System.Windows.Forms.Button();
@@ -71,7 +72,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.kernelRows = new System.Windows.Forms.NumericUpDown();
             this.kernelColumns = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -323,7 +323,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.applyFilterButton);
             this.groupBox4.Controls.Add(this.loadKernel);
             this.groupBox4.Controls.Add(this.loadComboBox);
             this.groupBox4.Controls.Add(this.calcDivisorButton);
@@ -348,6 +348,17 @@
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Additional filter";
+            // 
+            // applyFilterButton
+            // 
+            this.applyFilterButton.BackColor = System.Drawing.Color.LimeGreen;
+            this.applyFilterButton.Location = new System.Drawing.Point(626, 529);
+            this.applyFilterButton.Name = "applyFilterButton";
+            this.applyFilterButton.Size = new System.Drawing.Size(200, 58);
+            this.applyFilterButton.TabIndex = 18;
+            this.applyFilterButton.Text = "Apply filter";
+            this.applyFilterButton.UseVisualStyleBackColor = false;
+            this.applyFilterButton.Click += new System.EventHandler(this.applyFilterButton_Click);
             // 
             // loadKernel
             // 
@@ -562,16 +573,6 @@
             0,
             0});
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.LimeGreen;
-            this.button1.Location = new System.Drawing.Point(626, 529);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 58);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "Save filter";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
@@ -652,6 +653,6 @@
         private Label label6;
         private Button loadKernel;
         private ComboBox loadComboBox;
-        private Button button1;
+        private Button applyFilterButton;
     }
 }

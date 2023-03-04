@@ -10,6 +10,8 @@ namespace FilteringApp
         Bitmap initialImg = null;
         FunctionFilters functionFilter = new FunctionFilters();
         List<ConvolutionFilter> convFilters = new List<ConvolutionFilter>();
+        int customKernelWidth = 0;
+        int customKernelHeight = 0;
 
         public Filtering()
         {
@@ -128,6 +130,8 @@ namespace FilteringApp
             anchorX.Value = Math.Floor(kernelColumns.Value / 2);
             anchorY.Maximum = kernelRows.Value - 1;
             anchorY.Value = Math.Floor(kernelRows.Value / 2);
+            customKernelWidth = (int)kernelColumns.Value;
+            customKernelHeight = (int)kernelRows.Value;
         }
 
         private void calcDivisorButton_Click(object sender, EventArgs e)
@@ -167,6 +171,30 @@ namespace FilteringApp
                     kernelEditorPanel.Controls.Add(input, i, j);
                 }
             }
+            customKernelWidth = (int)kernelColumns.Value;
+            customKernelHeight = (int)kernelRows.Value;
+        }
+
+        private void applyFilterButton_Click(object sender, EventArgs e)
+        {
+            int[,] customKernel = new int[customKernelWidth,customKernelHeight];
+
+            for (int i = 0; i < customKernelWidth; i++)
+            {
+                for (int j = 0; j < customKernelHeight; j++)
+                {
+                    customKernel[i, j] = Int32.Parse(kernelEditorPanel.GetControlFromPosition(i, j).Text);
+                }
+            }
+            ConvolutionFilter custom = new CustomFilter(
+                "custom", 
+                customKernel, 
+                Int32.Parse(offsetValue.Text), 
+                Int32.Parse(divisorValue.Text),
+                (int)anchorX.Value, (int)anchorY.Value);
+
+            modifiedImage.Image = custom.applyFilter(modifiedImg);
+            modifiedImg = custom.applyFilter(modifiedImg);
         }
     }
 }
