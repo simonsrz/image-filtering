@@ -12,6 +12,7 @@ namespace FilteringApp
         List<ConvolutionFilter> convFilters = new List<ConvolutionFilter>();
         int customKernelWidth = 0;
         int customKernelHeight = 0;
+        int customFilterNr = 1;
 
         public Filtering()
         {
@@ -144,7 +145,14 @@ namespace FilteringApp
                     sum += Int32.Parse(kernelEditorPanel.GetControlFromPosition(i, j).Text);
                 }
             }
-            divisorValue.Text = sum.ToString();
+            if(sum == 0)
+            {
+                divisorValue.Text = "1";
+            }
+            else
+            {
+                divisorValue.Text = sum.ToString();
+            }
         }
 
         private void loadKernel_Click(object sender, EventArgs e)
@@ -195,6 +203,47 @@ namespace FilteringApp
 
             modifiedImage.Image = custom.applyFilter(modifiedImg);
             modifiedImg = custom.applyFilter(modifiedImg);
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            int[,] customKernel = new int[customKernelWidth, customKernelHeight];
+
+            for (int i = 0; i < customKernelWidth; i++)
+            {
+                for (int j = 0; j < customKernelHeight; j++)
+                {
+                    customKernel[i, j] = Int32.Parse(kernelEditorPanel.GetControlFromPosition(i, j).Text);
+                }
+            }
+
+            SavePopupForm popup = new SavePopupForm();
+            DialogResult dialogresult = popup.ShowDialog();
+
+            if (dialogresult == DialogResult.OK)
+            {
+                ConvolutionFilter custom = new CustomFilter(
+                    popup.Controls[0].Text,
+                    customKernel,
+                    Int32.Parse(offsetValue.Text),
+                    Int32.Parse(divisorValue.Text),
+                    (int)anchorX.Value, (int)anchorY.Value);
+                convFilters.Add(custom);
+                loadComboBox.Items.Add(custom.filterName);
+            }
+            else if (dialogresult == DialogResult.Cancel)
+            {
+                ConvolutionFilter custom = new CustomFilter(
+                   $"Filter no. {customFilterNr}",
+                   customKernel,
+                   Int32.Parse(offsetValue.Text),
+                   Int32.Parse(divisorValue.Text),
+                   (int)anchorX.Value, (int)anchorY.Value);
+                convFilters.Add(custom);
+                loadComboBox.Items.Add(custom.filterName);
+                customFilterNr++;
+            }
+            popup.Dispose();
         }
     }
 }

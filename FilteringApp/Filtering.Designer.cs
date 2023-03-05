@@ -72,6 +72,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.kernelRows = new System.Windows.Forms.NumericUpDown();
             this.kernelColumns = new System.Windows.Forms.NumericUpDown();
+            this.saveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -323,6 +324,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.saveButton);
             this.groupBox4.Controls.Add(this.applyFilterButton);
             this.groupBox4.Controls.Add(this.loadKernel);
             this.groupBox4.Controls.Add(this.loadComboBox);
@@ -362,7 +364,7 @@
             // 
             // loadKernel
             // 
-            this.loadKernel.Location = new System.Drawing.Point(626, 180);
+            this.loadKernel.Location = new System.Drawing.Point(626, 167);
             this.loadKernel.Name = "loadKernel";
             this.loadKernel.Size = new System.Drawing.Size(200, 46);
             this.loadKernel.TabIndex = 17;
@@ -573,6 +575,16 @@
             0,
             0});
             // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(626, 66);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(200, 39);
+            this.saveButton.TabIndex = 19;
+            this.saveButton.Text = "Save filter";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
@@ -654,5 +666,6 @@
         private Button loadKernel;
         private ComboBox loadComboBox;
         private Button applyFilterButton;
+        private Button saveButton;
     }
 }

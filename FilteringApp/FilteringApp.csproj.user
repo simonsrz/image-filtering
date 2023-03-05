@@ -4,5 +4,8 @@
     <Compile Update="Filtering.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="SavePopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

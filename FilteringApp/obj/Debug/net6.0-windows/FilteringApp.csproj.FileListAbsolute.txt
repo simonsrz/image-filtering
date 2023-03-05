@@ -15,3 +15,4 @@ D:\Studia\Computer Graphics\image-filtering\FilteringApp\obj\Debug\net6.0-window
 D:\Studia\Computer Graphics\image-filtering\FilteringApp\obj\Debug\net6.0-windows\FilteringApp.genruntimeconfig.cache
 D:\Studia\Computer Graphics\image-filtering\FilteringApp\obj\Debug\net6.0-windows\ref\FilteringApp.dll
 D:\Studia\Computer Graphics\image-filtering\FilteringApp\obj\Debug\net6.0-windows\FilteringApp.Filtering.resources
+D:\Studia\Computer Graphics\image-filtering\FilteringApp\obj\Debug\net6.0-windows\FilteringApp.SavePopupForm.resources
