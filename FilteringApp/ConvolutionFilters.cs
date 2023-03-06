@@ -80,10 +80,6 @@ namespace FilteringApp
             int height = kernel.GetLength(1);
             int width = kernel.GetLength(0);
 
-            //for (int x = anchorX; x < originalImage.Width - (width - anchorX - 1); x++)
-            //{
-            //    for (int y = anchorY; y < originalImage.Height - (height - anchorY - 1); y++)
-
             for (int x = 0; x < originalImage.Width; x++)
             {
                 for (int y = 0; y < originalImage.Height; y++)
