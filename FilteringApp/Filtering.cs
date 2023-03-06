@@ -162,11 +162,15 @@ namespace FilteringApp
                 kernelEditorPanel.Controls[0].Dispose();
             }
 
-            kernelColumns.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(1);
-            kernelRows.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(0);
+            kernelColumns.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(0);
+            kernelRows.Value = convFilters[loadComboBox.SelectedIndex].kernel.GetLength(1);
             divisorValue.Text = convFilters[loadComboBox.SelectedIndex].divisor.ToString();
             divisorValue.Text = convFilters[loadComboBox.SelectedIndex].divisor.ToString();
             offsetValue.Text = convFilters[loadComboBox.SelectedIndex].offset.ToString();
+
+            anchorX.Maximum = kernelColumns.Value - 1;
+            anchorY.Maximum = kernelRows.Value - 1;
+
             anchorX.Value = convFilters[loadComboBox.SelectedIndex].anchorX;
             anchorY.Value = convFilters[loadComboBox.SelectedIndex].anchorY;
 
