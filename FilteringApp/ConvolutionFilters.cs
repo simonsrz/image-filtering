@@ -24,14 +24,17 @@ namespace FilteringApp
             {
                 for (int posY = 0; posY < kernel.GetLength(1); posY++)
                 {
-                    if (x - ancX + posX < 0 || y - ancY + posY < 0 || x - ancX + posX >= originalImage.Width || y - ancY + posY >= originalImage.Height)
-                    {
-                        colorsMatrix[posX, posY] = originalImage.GetPixel(x,y);
-                    }
-                    else
-                    {
-                        colorsMatrix[posX, posY] = originalImage.GetPixel(x - ancX + posX, y - ancY + posY);
-                    }
+                    //if (x - ancX + posX < 0 || y - ancY + posY < 0 || x - ancX + posX >= originalImage.Width || y - ancY + posY >= originalImage.Height)
+                    //{
+                    //    colorsMatrix[posX, posY] = originalImage.GetPixel(x, y);
+                    //}
+                    //else
+                    //{
+                    //    colorsMatrix[posX, posY] = originalImage.GetPixel(x - ancX + posX, y - ancY + posY);
+                    //}
+                    int xp = Math.Clamp(x - ancX + posX, 0, originalImage.Width - 1);
+                    int yp = Math.Clamp(y - ancY + posY, 0, originalImage.Height - 1);
+                    colorsMatrix[posX, posY] = originalImage.GetPixel(xp, yp);
                 }
             }
             return colorsMatrix;
