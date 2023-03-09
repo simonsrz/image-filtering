@@ -37,6 +37,7 @@
             this.brightnessButton = new System.Windows.Forms.Button();
             this.inversionButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labPartButton = new System.Windows.Forms.Button();
             this.embossButton = new System.Windows.Forms.Button();
             this.edgeDetectionButton = new System.Windows.Forms.Button();
             this.gaussianBlurButton = new System.Windows.Forms.Button();
@@ -53,6 +54,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.initialImage = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.saveButton = new System.Windows.Forms.Button();
             this.applyFilterButton = new System.Windows.Forms.Button();
             this.loadKernel = new System.Windows.Forms.Button();
             this.loadComboBox = new System.Windows.Forms.ComboBox();
@@ -72,7 +74,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.kernelRows = new System.Windows.Forms.NumericUpDown();
             this.kernelColumns = new System.Windows.Forms.NumericUpDown();
-            this.saveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -166,6 +167,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.labPartButton);
             this.groupBox2.Controls.Add(this.embossButton);
             this.groupBox2.Controls.Add(this.edgeDetectionButton);
             this.groupBox2.Controls.Add(this.gaussianBlurButton);
@@ -177,10 +179,20 @@
             this.groupBox2.Controls.Add(this.blurButton);
             this.groupBox2.Location = new System.Drawing.Point(1246, 367);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(316, 292);
+            this.groupBox2.Size = new System.Drawing.Size(316, 347);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Convolution filters";
+            // 
+            // labPartButton
+            // 
+            this.labPartButton.Location = new System.Drawing.Point(6, 298);
+            this.labPartButton.Name = "labPartButton";
+            this.labPartButton.Size = new System.Drawing.Size(304, 40);
+            this.labPartButton.TabIndex = 20;
+            this.labPartButton.Text = "Laboratory blur";
+            this.labPartButton.UseVisualStyleBackColor = true;
+            this.labPartButton.Click += new System.EventHandler(this.labPartButton_Click);
             // 
             // embossButton
             // 
@@ -346,10 +358,20 @@
             this.groupBox4.Controls.Add(this.kernelColumns);
             this.groupBox4.Location = new System.Drawing.Point(18, 665);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1544, 607);
+            this.groupBox4.Size = new System.Drawing.Size(1222, 607);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Additional filter";
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(626, 66);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(200, 39);
+            this.saveButton.TabIndex = 19;
+            this.saveButton.Text = "Save filter";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // applyFilterButton
             // 
@@ -575,16 +597,6 @@
             0,
             0});
             // 
-            // saveButton
-            // 
-            this.saveButton.Location = new System.Drawing.Point(626, 66);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(200, 39);
-            this.saveButton.TabIndex = 19;
-            this.saveButton.Text = "Save filter";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
@@ -667,5 +679,6 @@
         private ComboBox loadComboBox;
         private Button applyFilterButton;
         private Button saveButton;
+        private Button labPartButton;
     }
 }

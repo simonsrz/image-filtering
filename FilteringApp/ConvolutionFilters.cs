@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace FilteringApp
         public abstract int anchorY { get; }
         public abstract int[,] kernel { get; }
 
-        private Color[,] getColorsMatrix(int x, int y, int ancX, int ancY, Bitmap originalImage)
+        public Color[,] getColorsMatrix(int x, int y, int ancX, int ancY, Bitmap originalImage)
         {
             Color[,] colorsMatrix = new Color[kernel.GetLength(0), kernel.GetLength(1)];
 
@@ -32,7 +33,7 @@ namespace FilteringApp
             return colorsMatrix;
         }
 
-        private double getRedChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
+        public double getRedChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double red = 0;
             for (int i = 0; i < kernel.GetLength(0); i++)
@@ -44,7 +45,7 @@ namespace FilteringApp
             }
             return red;
         }
-        private double getGreenChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
+        public double getGreenChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double green = 0;
             for (int i = 0; i < kernel.GetLength(0); i++)
@@ -56,7 +57,7 @@ namespace FilteringApp
             }
             return green;
         }
-        private double getBlueChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
+        public double getBlueChannelFromKernel(Color[,] colorsMatrix, int[,] kernel)
         {
             double blue = 0;
             for (int i = 0; i < kernel.GetLength(0); i++)
@@ -94,6 +95,7 @@ namespace FilteringApp
             }
             return afterModificationMap;
         }
+
     }
 
     public class BlurFillter : ConvolutionFilter
@@ -349,4 +351,121 @@ namespace FilteringApp
             get { return _anchorY; }
         }
     }
+    public class AdditionalFilter : ConvolutionFilter
+    {
+        public override string filterName
+        {
+            get { return "Blur without edges"; }
+        }
+
+        private int _divisor = 25;
+        public override int divisor
+        {
+            get { return _divisor; }
+        }
+
+        private int _offset = 0;
+        public override int offset
+        {
+            get { return _offset; }
+        }
+
+        int[,] _kernel = new int[5, 5] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } };
+
+        public override int[,] kernel
+        {
+            get { return _kernel; }
+        }
+
+        int _anchorX = 2;
+        public override int anchorX
+        {
+            get { return _anchorX; }
+        }
+
+        int _anchorY = 2;
+        public override int anchorY
+        {
+            get { return _anchorY; }
+        }
+
+        private double getRedChannelFromKernelLabPart(Color[,] colorsMatrix, int[,] kernel, int M)
+        {
+            double red = 0;
+            int divisor = 0;
+            for (int i = 0; i < kernel.GetLength(0); i++)
+            {
+                for (int j = 0; j < kernel.GetLength(1); j++)
+                {
+                    if (calculateDistance(colorsMatrix[anchorX, anchorY], colorsMatrix[i, j]) < M)
+                    {
+                        red += colorsMatrix[i, j].R * kernel[i, j];
+                        divisor++;
+                    }
+                }
+            }
+            return red/divisor;
+        }
+        private double getGreenChannelFromKernelLabPart(Color[,] colorsMatrix, int[,] kernel, int M)
+        {
+            double green = 0;
+            int divisor = 0;
+            for (int i = 0; i < kernel.GetLength(0); i++)
+            {
+                for (int j = 0; j < kernel.GetLength(1); j++)
+                {
+                    if (calculateDistance(colorsMatrix[anchorX, anchorY], colorsMatrix[i, j]) < M)
+                    {
+                        green += colorsMatrix[i, j].G * kernel[i, j];
+                        divisor++;
+                    }
+                }
+            }
+            return green/divisor;
+        }
+        private double getBlueChannelFromKernelLabPart(Color[,] colorsMatrix, int[,] kernel, int M)
+        {
+            double blue = 0;
+            int divisor = 0;
+            for (int i = 0; i < kernel.GetLength(0); i++)
+            {
+                for (int j = 0; j < kernel.GetLength(1); j++)
+                {
+                    if (calculateDistance(colorsMatrix[anchorX, anchorY], colorsMatrix[i, j]) < M)
+                    {
+                        blue += colorsMatrix[i, j].B * kernel[i, j];
+                        divisor++;
+                    }
+                }
+            }
+            return blue/divisor;
+        }
+
+        public Bitmap applyAdditionalFilter(Bitmap originalImage, int M)
+        {
+            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
+            int height = kernel.GetLength(1);
+            int width = kernel.GetLength(0);
+
+            for (int x = 0; x < originalImage.Width; x++)
+            {
+                for (int y = 0; y < originalImage.Height; y++)
+                {
+                    Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, originalImage);
+
+                    double red = (getRedChannelFromKernelLabPart(colorsMatrix, _kernel, M)) + _offset;
+                    double green = (getGreenChannelFromKernelLabPart(colorsMatrix, _kernel, M)) + _offset;
+                    double blue = (getBlueChannelFromKernelLabPart(colorsMatrix, _kernel, M)) + _offset;
+
+                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
+
+                    colorsMatrix[_anchorX, _anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+
+                    afterModificationMap.SetPixel(x, y, colorsMatrix[_anchorX, _anchorY]);
+                }
+            }
+            return afterModificationMap;
+        }
+    }
+
 }

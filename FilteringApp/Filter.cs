@@ -24,5 +24,11 @@ namespace FilteringApp
                 blue = 0;
             return new int[3] { red, green, blue };
         }
+
+        public double calculateDistance(Color center, Color p)
+        {
+            double result = Math.Abs(center.R - p.R) + Math.Abs(center.G - p.G) + Math.Abs(center.B - p.B);
+            return result;
+        }
     }
 }

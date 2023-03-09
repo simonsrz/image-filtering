@@ -249,5 +249,12 @@ namespace FilteringApp
             }
             popup.Dispose();
         }
+
+        private void labPartButton_Click(object sender, EventArgs e)
+        {
+            AdditionalFilter newFilter = new AdditionalFilter();
+            modifiedImage.Image = newFilter.applyAdditionalFilter(modifiedImg, 150);
+            modifiedImg = newFilter.applyAdditionalFilter(modifiedImg, 150);
+        }
     }
 }
