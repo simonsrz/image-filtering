@@ -190,7 +190,7 @@
             this.labPartButton.Name = "labPartButton";
             this.labPartButton.Size = new System.Drawing.Size(304, 40);
             this.labPartButton.TabIndex = 20;
-            this.labPartButton.Text = "Laboratory blur";
+            this.labPartButton.Text = "Blur /w sharp edges";
             this.labPartButton.UseVisualStyleBackColor = true;
             this.labPartButton.Click += new System.EventHandler(this.labPartButton_Click);
             // 
