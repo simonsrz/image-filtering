@@ -96,30 +96,36 @@ namespace FilteringApp
             return blue / divisor;
         }
 
-        public Bitmap applyAdditionalFilter(Bitmap originalImage, int M)
+        public void applyAdditionalFilter(DirectBitmap originalImage, int M)
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
             int height = kernel.GetLength(1);
             int width = kernel.GetLength(0);
 
-            for (int x = 0; x < originalImage.Width; x++)
+            DirectBitmap temp = new DirectBitmap(originalImage.Width, originalImage.Height);
+            using (var g = Graphics.FromImage(temp.Bitmap))
             {
-                for (int y = 0; y < originalImage.Height; y++)
+                g.DrawImage(originalImage.Bitmap, 0, 0);
+
+
+                for (int x = 0; x < temp.Width; x++)
                 {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, originalImage);
+                    for (int y = 0; y < temp.Height; y++)
+                    {
+                        Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, temp);
 
-                    double red = (getRedChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
-                    double green = (getGreenChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
-                    double blue = (getBlueChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
+                        double red = (getRedChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
+                        double green = (getGreenChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
+                        double blue = (getBlueChannelFromKernelWithDistance(colorsMatrix, _kernel, M)) + _offset;
 
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
+                        int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[_anchorX, _anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                        colorsMatrix[_anchorX, _anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[_anchorX, _anchorY]);
+                        originalImage.SetPixel(x, y, colorsMatrix[_anchorX, _anchorY]);
+                    }
                 }
             }
-            return afterModificationMap;
+            temp.Dispose();
         }
     }
 }

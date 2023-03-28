@@ -8,10 +8,8 @@ namespace FilteringApp
 {
     internal class FunctionFilters : Filter
     {
-        public Bitmap colorInversion(Bitmap originalImage)
+        public void colorInversion(DirectBitmap originalImage)
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-
             for (int x = 0; x < originalImage.Width; x++)
             {
                 for (int y = 0; y < originalImage.Height; y++)
@@ -20,17 +18,13 @@ namespace FilteringApp
 
                     currPixel = Color.FromArgb(255 - currPixel.R, 255 - currPixel.G, 255 - currPixel.B);
 
-                    afterModificationMap.SetPixel(x, y, currPixel);
+                    originalImage.SetPixel(x, y, currPixel);
                 }
             }
-
-            return afterModificationMap;
         }
 
-        public Bitmap brightnessEnhancement(Bitmap originalImage, int brightnessLevel)
+        public void brightnessEnhancement(DirectBitmap originalImage, int brightnessLevel)
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-
             for (int x = 0; x < originalImage.Width; x++)
             {
                 for (int y = 0; y < originalImage.Height; y++)
@@ -45,17 +39,14 @@ namespace FilteringApp
 
                     currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, currPixel);
+                    originalImage.SetPixel(x, y, currPixel);
                 }
             }
-
-            return afterModificationMap;
         }
 
-        public Bitmap contrastEnhancement(Bitmap originalImage, double contrastThreshold)
+        public void contrastEnhancement(DirectBitmap originalImage, double contrastThreshold)
         {
             double contrastLevel = Math.Pow((100.0 + contrastThreshold) / 100.0, 2);
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
 
             for (int x = 0; x < originalImage.Width; x++)
             {
@@ -71,17 +62,13 @@ namespace FilteringApp
 
                     currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, currPixel);
+                    originalImage.SetPixel(x, y, currPixel);
                 }
             }
-
-            return afterModificationMap;
         }
 
-        public Bitmap gammaCorrection(Bitmap originalImage, double gamma)
+        public void gammaCorrection(DirectBitmap originalImage, double gamma)
         {
-            Bitmap afterModificationMap = new Bitmap(originalImage.Width, originalImage.Height);
-
             for (int x = 0; x < originalImage.Width; x++)
             {
                 for (int y = 0; y < originalImage.Height; y++)
@@ -96,11 +83,26 @@ namespace FilteringApp
 
                     currPixel = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, currPixel);
+                    originalImage.SetPixel(x, y, currPixel);
                 }
             }
+        }
 
-            return afterModificationMap;
+        public void toGrayScale(DirectBitmap originalImage)
+        {
+            for (int x = 0; x < originalImage.Width; x++)
+            {
+                for (int y = 0; y < originalImage.Height; y++)
+                {
+                    Color currPixel = originalImage.GetPixel(x, y);
+
+                    int avg = (currPixel.R + currPixel.G + currPixel.B) / 3;
+
+                    currPixel = Color.FromArgb(avg, avg, avg);
+
+                    originalImage.SetPixel(x, y, currPixel);
+                }
+            }
         }
     }
 }

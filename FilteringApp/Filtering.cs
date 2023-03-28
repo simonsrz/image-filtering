@@ -6,10 +6,12 @@ namespace FilteringApp
 {
     public partial class Filtering : Form
     {
-        Bitmap modifiedImg = null;
-        Bitmap initialImg = null;
+        DirectBitmap modifiedImg = null;
+        DirectBitmap initialImg = null;
+        Bitmap uploadedBmp = null;
         FunctionFilters functionFilter = new FunctionFilters();
         List<ConvolutionFilter> convFilters = new List<ConvolutionFilter>();
+        List<ErrorDiffusion> errorDiffusionFilters = new List<ErrorDiffusion>();
         int customKernelWidth = 0;
         int customKernelHeight = 0;
         int customFilterNr = 1;
@@ -27,6 +29,19 @@ namespace FilteringApp
             loadComboBox.Items.Add(convFilters[2].filterName);
             loadComboBox.Items.Add(convFilters[3].filterName);
             loadComboBox.Items.Add(convFilters[4].filterName);
+
+            errorDiffusionFilters.Add(new FloydSteinberg());
+            errorDiffusionFilters.Add(new Burkes());
+            errorDiffusionFilters.Add(new Stucky());
+            errorDiffusionFilters.Add(new Sierra());
+            errorDiffusionFilters.Add(new Atkinson());
+            ditherFilterCombo.Items.Add(errorDiffusionFilters[0].filterName);
+            ditherFilterCombo.Items.Add(errorDiffusionFilters[1].filterName);
+            ditherFilterCombo.Items.Add(errorDiffusionFilters[2].filterName);
+            ditherFilterCombo.Items.Add(errorDiffusionFilters[3].filterName);
+            ditherFilterCombo.Items.Add(errorDiffusionFilters[4].filterName);
+
+            ditherFilterCombo.SelectedIndex = 0;
             loadComboBox.SelectedIndex = 0;
         }
 
@@ -36,17 +51,34 @@ namespace FilteringApp
             imgDialog.Filter = "Image Files (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png";
             if (imgDialog.ShowDialog() == DialogResult.OK)
             {
-                initialImage.Image = new Bitmap(imgDialog.FileName);
-                initialImg = new Bitmap(imgDialog.FileName);
-                modifiedImage.Image = new Bitmap(imgDialog.FileName);
-                modifiedImg = new Bitmap(imgDialog.FileName);
+                uploadedBmp = new Bitmap(imgDialog.FileName);
+                modifiedImg = new DirectBitmap(uploadedBmp.Width, uploadedBmp.Height);
+                initialImg = new DirectBitmap(uploadedBmp.Width, uploadedBmp.Height);
+
+                using (var g = Graphics.FromImage(initialImg.Bitmap))
+                {
+                    g.DrawImage(uploadedBmp, 0, 0);
+                }
+                using (var g = Graphics.FromImage(modifiedImg.Bitmap))
+                {
+                    g.DrawImage(uploadedBmp, 0, 0);
+                }
+
+                initialImage.Image = initialImg.Bitmap;
+                modifiedImage.Image = modifiedImg.Bitmap;
             }
         }
 
         private void reloadImageMenuItem_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = initialImg;
-            modifiedImg = initialImg;
+            modifiedImg.Dispose();
+            modifiedImg = new DirectBitmap(uploadedBmp.Width, uploadedBmp.Height);
+            using (var g = Graphics.FromImage(modifiedImg.Bitmap))
+            {
+                g.DrawImage(uploadedBmp, 0, 0);
+            }
+
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void saveImageMenuItem_Click(object sender, EventArgs e)
@@ -60,55 +92,55 @@ namespace FilteringApp
 
         private void inversionButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = functionFilter.colorInversion(modifiedImg);
-            modifiedImg = functionFilter.colorInversion(modifiedImg);
+            functionFilter.colorInversion(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void brightnessButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = functionFilter.brightnessEnhancement(modifiedImg, 10);
-            modifiedImg = functionFilter.brightnessEnhancement(modifiedImg, 10);
+            functionFilter.brightnessEnhancement(modifiedImg, 10);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void contrastButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = functionFilter.contrastEnhancement(modifiedImg, 10);
-            modifiedImg = functionFilter.contrastEnhancement(modifiedImg, 10);
+            functionFilter.contrastEnhancement(modifiedImg, 10);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void gammaButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = functionFilter.gammaCorrection(modifiedImg, 1.5);
-            modifiedImg = functionFilter.gammaCorrection(modifiedImg, 1.5);
+            functionFilter.gammaCorrection(modifiedImg, 1.5);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
         private void blurButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = convFilters[0].applyFilter(modifiedImg);
-            modifiedImg = convFilters[0].applyFilter(modifiedImg);
+            convFilters[0].applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void gaussianBlurButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = convFilters[1].applyFilter(modifiedImg);
-            modifiedImg = convFilters[1].applyFilter(modifiedImg);
+            convFilters[1].applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void sharpenButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = convFilters[2].applyFilter(modifiedImg);
-            modifiedImg = convFilters[2].applyFilter(modifiedImg);
+            convFilters[2].applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void edgeDetectionButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = convFilters[3].applyFilter(modifiedImg);
-            modifiedImg = convFilters[3].applyFilter(modifiedImg);
+            convFilters[3].applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void embossButton_Click(object sender, EventArgs e)
         {
-            modifiedImage.Image = convFilters[4].applyFilter(modifiedImg);
-            modifiedImg = convFilters[4].applyFilter(modifiedImg);
+            convFilters[4].applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void kernelGridButton_Click(object sender, EventArgs e)
@@ -189,7 +221,7 @@ namespace FilteringApp
 
         private void applyFilterButton_Click(object sender, EventArgs e)
         {
-            int[,] customKernel = new int[customKernelWidth,customKernelHeight];
+            int[,] customKernel = new int[customKernelWidth, customKernelHeight];
 
             for (int i = 0; i < customKernelWidth; i++)
             {
@@ -199,14 +231,14 @@ namespace FilteringApp
                 }
             }
             ConvolutionFilter custom = new CustomFilter(
-                "custom", 
-                customKernel, 
-                Int32.Parse(offsetValue.Text), 
+                "custom",
+                customKernel,
+                Int32.Parse(offsetValue.Text),
                 Int32.Parse(divisorValue.Text),
                 (int)anchorX.Value, (int)anchorY.Value);
 
-            modifiedImage.Image = custom.applyFilter(modifiedImg);
-            modifiedImg = custom.applyFilter(modifiedImg);
+            custom.applyFilter(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -253,8 +285,56 @@ namespace FilteringApp
         private void labPartButton_Click(object sender, EventArgs e)
         {
             AdditionalFilter newFilter = new AdditionalFilter();
-            modifiedImage.Image = newFilter.applyAdditionalFilter(modifiedImg, 150);
-            modifiedImg = newFilter.applyAdditionalFilter(modifiedImg, 150);
+            newFilter.applyAdditionalFilter(modifiedImg, 150);
+            modifiedImage.Image = modifiedImg.Bitmap;
+        }
+
+        private void grayscaleButton_Click(object sender, EventArgs e)
+        {
+            functionFilter.toGrayScale(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
+        }
+
+        private void popularityButton_Click(object sender, EventArgs e)
+        {
+            PopularityQuantization quantization = new PopularityQuantization();
+            quantization.applyQuantization(modifiedImg, (int)quantizationColors.Value);
+            modifiedImage.Image = modifiedImg.Bitmap;
+        }
+
+        private void ditheringButton_Click(object sender, EventArgs e)
+        {
+            errorDiffusionFilters[ditherFilterCombo.SelectedIndex].applyFilter(modifiedImg, (int)ditheringColors.Value);
+            modifiedImage.Image = modifiedImg.Bitmap;
+        }
+
+        private bool isGrayscale(DirectBitmap bitmap)
+        {
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    if(!(bitmap.GetPixel(x, y).R == bitmap.GetPixel(x, y).G && bitmap.GetPixel(x, y).G == bitmap.GetPixel(x, y).B))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void stretchButton_Click(object sender, EventArgs e)
+        {
+            HistogramStretching stretching = new HistogramStretching();
+            stretching.histogramStretch(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
+        }
+
+        private void equalizationButton_Click(object sender, EventArgs e)
+        {
+            HistogramEqualization equalization = new HistogramEqualization();
+            equalization.equalizeHistogram(modifiedImg);
+            modifiedImage.Image = modifiedImg.Bitmap;
         }
     }
 }

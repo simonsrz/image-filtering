@@ -17,7 +17,7 @@ namespace FilteringApp
         public abstract int anchorY { get; }
         public abstract int[,] kernel { get; }
 
-        public Color[,] getColorsMatrix(int x, int y, int ancX, int ancY, Bitmap originalImage)
+        public Color[,] getColorsMatrix(int x, int y, int ancX, int ancY, DirectBitmap originalImage)
         {
             Color[,] colorsMatrix = new Color[kernel.GetLength(0), kernel.GetLength(1)];
 
@@ -70,30 +70,36 @@ namespace FilteringApp
             return blue;
         }
 
-        public Bitmap applyFilter(Bitmap originalImage)
+        public void applyFilter(DirectBitmap originalImage)
         {
-            Bitmap afterModificationMap = new Bitmap( originalImage.Width, originalImage.Height);
             int height = kernel.GetLength(1);
             int width = kernel.GetLength(0);
 
-            for (int x = 0; x < originalImage.Width; x++)
+            DirectBitmap temp = new DirectBitmap(originalImage.Width, originalImage.Height);
+            using (var g = Graphics.FromImage(temp.Bitmap))
             {
-                for (int y = 0; y < originalImage.Height; y++)
+                g.DrawImage(originalImage.Bitmap, 0, 0);
+
+
+                for (int x = 0; x < temp.Width; x++)
                 {
-                    Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, originalImage);
+                    for (int y = 0; y < temp.Height; y++)
+                    {
+                        Color[,] colorsMatrix = getColorsMatrix(x, y, anchorX, anchorY, temp);
 
-                    double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
-                    double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                        double red = (getRedChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                        double green = (getGreenChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
+                        double blue = (getBlueChannelFromKernel(colorsMatrix, kernel) / divisor) + offset;
 
-                    int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
+                        int[] rgb = rgbValidation((int)red, (int)green, (int)blue);
 
-                    colorsMatrix[anchorX, anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                        colorsMatrix[anchorX, anchorY] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
 
-                    afterModificationMap.SetPixel(x, y, colorsMatrix[anchorX, anchorY]);
+                        originalImage.SetPixel(x, y, colorsMatrix[anchorX, anchorY]);
+                    }
                 }
             }
-            return afterModificationMap;
+            temp.Dispose();
         }
 
     }
@@ -148,7 +154,7 @@ namespace FilteringApp
         }
 
 
-        private int _divisor = 18;
+        private int _divisor = 16;
         public override int divisor
         {
             get { return _divisor; }

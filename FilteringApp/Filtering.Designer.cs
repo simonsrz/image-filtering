@@ -51,6 +51,7 @@
             this.loadImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grayscaleButton = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.initialImage = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -74,6 +75,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.kernelRows = new System.Windows.Forms.NumericUpDown();
             this.kernelColumns = new System.Windows.Forms.NumericUpDown();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.ditheringColors = new System.Windows.Forms.NumericUpDown();
+            this.ditherFilterCombo = new System.Windows.Forms.ComboBox();
+            this.ditheringButton = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.quantizationColors = new System.Windows.Forms.NumericUpDown();
+            this.popularityButton = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.equalizationButton = new System.Windows.Forms.Button();
+            this.stretchButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.modifiedImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -86,6 +97,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.anchorX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ditheringColors)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.quantizationColors)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox2
@@ -105,10 +121,9 @@
             // 
             // modifiedImage
             // 
-            this.modifiedImage.Location = new System.Drawing.Point(619, 47);
+            this.modifiedImage.Location = new System.Drawing.Point(778, 47);
             this.modifiedImage.Name = "modifiedImage";
-            this.modifiedImage.Size = new System.Drawing.Size(603, 547);
-            this.modifiedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.modifiedImage.Size = new System.Drawing.Size(766, 547);
             this.modifiedImage.TabIndex = 3;
             this.modifiedImage.TabStop = false;
             // 
@@ -118,16 +133,16 @@
             this.groupBox1.Controls.Add(this.contrastButton);
             this.groupBox1.Controls.Add(this.brightnessButton);
             this.groupBox1.Controls.Add(this.inversionButton);
-            this.groupBox1.Location = new System.Drawing.Point(1246, 59);
+            this.groupBox1.Location = new System.Drawing.Point(865, 665);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(316, 302);
+            this.groupBox1.Size = new System.Drawing.Size(316, 245);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Function filters";
             // 
             // gammaButton
             // 
-            this.gammaButton.Location = new System.Drawing.Point(6, 250);
+            this.gammaButton.Location = new System.Drawing.Point(6, 185);
             this.gammaButton.Name = "gammaButton";
             this.gammaButton.Size = new System.Drawing.Size(304, 46);
             this.gammaButton.TabIndex = 3;
@@ -137,7 +152,7 @@
             // 
             // contrastButton
             // 
-            this.contrastButton.Location = new System.Drawing.Point(6, 182);
+            this.contrastButton.Location = new System.Drawing.Point(6, 133);
             this.contrastButton.Name = "contrastButton";
             this.contrastButton.Size = new System.Drawing.Size(304, 46);
             this.contrastButton.TabIndex = 2;
@@ -147,7 +162,7 @@
             // 
             // brightnessButton
             // 
-            this.brightnessButton.Location = new System.Drawing.Point(6, 114);
+            this.brightnessButton.Location = new System.Drawing.Point(6, 81);
             this.brightnessButton.Name = "brightnessButton";
             this.brightnessButton.Size = new System.Drawing.Size(304, 46);
             this.brightnessButton.TabIndex = 1;
@@ -157,7 +172,7 @@
             // 
             // inversionButton
             // 
-            this.inversionButton.Location = new System.Drawing.Point(6, 47);
+            this.inversionButton.Location = new System.Drawing.Point(6, 29);
             this.inversionButton.Name = "inversionButton";
             this.inversionButton.Size = new System.Drawing.Size(304, 46);
             this.inversionButton.TabIndex = 0;
@@ -177,9 +192,9 @@
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.blurButton);
-            this.groupBox2.Location = new System.Drawing.Point(1246, 367);
+            this.groupBox2.Location = new System.Drawing.Point(865, 916);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(316, 347);
+            this.groupBox2.Size = new System.Drawing.Size(316, 356);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Convolution filters";
@@ -286,7 +301,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadImageMenuItem,
             this.reloadImageMenuItem,
-            this.saveImageMenuItem});
+            this.saveImageMenuItem,
+            this.grayscaleButton});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1574, 40);
@@ -314,13 +330,20 @@
             this.saveImageMenuItem.Text = "Save image";
             this.saveImageMenuItem.Click += new System.EventHandler(this.saveImageMenuItem_Click);
             // 
+            // grayscaleButton
+            // 
+            this.grayscaleButton.Name = "grayscaleButton";
+            this.grayscaleButton.Size = new System.Drawing.Size(134, 36);
+            this.grayscaleButton.Text = "Grayscale";
+            this.grayscaleButton.Click += new System.EventHandler(this.grayscaleButton_Click);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.initialImage);
             this.groupBox3.Controls.Add(this.modifiedImage);
             this.groupBox3.Location = new System.Drawing.Point(12, 59);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1228, 600);
+            this.groupBox3.Size = new System.Drawing.Size(1550, 600);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Images";
@@ -329,8 +352,7 @@
             // 
             this.initialImage.Location = new System.Drawing.Point(6, 47);
             this.initialImage.Name = "initialImage";
-            this.initialImage.Size = new System.Drawing.Size(603, 547);
-            this.initialImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.initialImage.Size = new System.Drawing.Size(766, 547);
             this.initialImage.TabIndex = 0;
             this.initialImage.TabStop = false;
             // 
@@ -358,7 +380,7 @@
             this.groupBox4.Controls.Add(this.kernelColumns);
             this.groupBox4.Location = new System.Drawing.Point(18, 665);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1222, 607);
+            this.groupBox4.Size = new System.Drawing.Size(841, 607);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Additional filter";
@@ -597,12 +619,142 @@
             0,
             0});
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.ditheringColors);
+            this.groupBox5.Controls.Add(this.ditherFilterCombo);
+            this.groupBox5.Controls.Add(this.ditheringButton);
+            this.groupBox5.Location = new System.Drawing.Point(1187, 665);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(375, 245);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Dithering";
+            // 
+            // ditheringColors
+            // 
+            this.ditheringColors.Location = new System.Drawing.Point(6, 98);
+            this.ditheringColors.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.ditheringColors.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ditheringColors.Name = "ditheringColors";
+            this.ditheringColors.Size = new System.Drawing.Size(363, 39);
+            this.ditheringColors.TabIndex = 2;
+            this.ditheringColors.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // ditherFilterCombo
+            // 
+            this.ditherFilterCombo.DropDownWidth = 300;
+            this.ditherFilterCombo.FormattingEnabled = true;
+            this.ditherFilterCombo.Location = new System.Drawing.Point(6, 52);
+            this.ditherFilterCombo.Name = "ditherFilterCombo";
+            this.ditherFilterCombo.Size = new System.Drawing.Size(363, 40);
+            this.ditherFilterCombo.TabIndex = 1;
+            // 
+            // ditheringButton
+            // 
+            this.ditheringButton.Location = new System.Drawing.Point(6, 144);
+            this.ditheringButton.Name = "ditheringButton";
+            this.ditheringButton.Size = new System.Drawing.Size(363, 95);
+            this.ditheringButton.TabIndex = 0;
+            this.ditheringButton.Text = "Apply dithering";
+            this.ditheringButton.UseVisualStyleBackColor = true;
+            this.ditheringButton.Click += new System.EventHandler(this.ditheringButton_Click);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.quantizationColors);
+            this.groupBox6.Controls.Add(this.popularityButton);
+            this.groupBox6.Location = new System.Drawing.Point(1187, 916);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(375, 182);
+            this.groupBox6.TabIndex = 9;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Color quantization";
+            // 
+            // quantizationColors
+            // 
+            this.quantizationColors.Location = new System.Drawing.Point(6, 40);
+            this.quantizationColors.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.quantizationColors.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.quantizationColors.Name = "quantizationColors";
+            this.quantizationColors.Size = new System.Drawing.Size(363, 39);
+            this.quantizationColors.TabIndex = 1;
+            this.quantizationColors.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // popularityButton
+            // 
+            this.popularityButton.Location = new System.Drawing.Point(6, 87);
+            this.popularityButton.Name = "popularityButton";
+            this.popularityButton.Size = new System.Drawing.Size(363, 89);
+            this.popularityButton.TabIndex = 0;
+            this.popularityButton.Text = "Popularity algorithm";
+            this.popularityButton.UseVisualStyleBackColor = true;
+            this.popularityButton.Click += new System.EventHandler(this.popularityButton_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.equalizationButton);
+            this.groupBox7.Controls.Add(this.stretchButton);
+            this.groupBox7.Location = new System.Drawing.Point(1187, 1104);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(375, 168);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Histogram operations";
+            // 
+            // equalizationButton
+            // 
+            this.equalizationButton.Location = new System.Drawing.Point(6, 103);
+            this.equalizationButton.Name = "equalizationButton";
+            this.equalizationButton.Size = new System.Drawing.Size(363, 59);
+            this.equalizationButton.TabIndex = 1;
+            this.equalizationButton.Text = "Equalization";
+            this.equalizationButton.UseVisualStyleBackColor = true;
+            this.equalizationButton.Click += new System.EventHandler(this.equalizationButton_Click);
+            // 
+            // stretchButton
+            // 
+            this.stretchButton.Location = new System.Drawing.Point(6, 38);
+            this.stretchButton.Name = "stretchButton";
+            this.stretchButton.Size = new System.Drawing.Size(363, 59);
+            this.stretchButton.TabIndex = 0;
+            this.stretchButton.Text = "Stretching";
+            this.stretchButton.UseVisualStyleBackColor = true;
+            this.stretchButton.Click += new System.EventHandler(this.stretchButton_Click);
+            // 
             // Filtering
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1574, 1284);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -628,6 +780,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.anchorX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelRows)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kernelColumns)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ditheringColors)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.quantizationColors)).EndInit();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -680,5 +837,16 @@
         private Button applyFilterButton;
         private Button saveButton;
         private Button labPartButton;
+        private ToolStripMenuItem grayscaleButton;
+        private GroupBox groupBox5;
+        private GroupBox groupBox6;
+        private Button popularityButton;
+        private NumericUpDown quantizationColors;
+        private Button ditheringButton;
+        private ComboBox ditherFilterCombo;
+        private NumericUpDown ditheringColors;
+        private GroupBox groupBox7;
+        private Button equalizationButton;
+        private Button stretchButton;
     }
 }
